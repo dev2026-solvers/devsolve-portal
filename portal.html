@@ -14,6 +14,7 @@
             --text-gray: #9ca3af;
             --border-color: #1f293d;
             --success-green: #10b981;
+            --error-red: #ff4d4d;
         }
 
         * {
@@ -360,13 +361,41 @@
 
                 <div class="form-group">
                     <label>Grade Level & Section</label>
-                    <input type="text" name="gradeSection" required placeholder="e.g., Grade 11A or 9B">
+                    <select name="gradeSection" required>
+                        <option value="">Select your Grade & Section</option>
+                        <optgroup label="Grade 12">
+                            <option value="12th NS">12th NS</option>
+                            <option value="12th SS">12th SS</option>
+                        </optgroup>
+                        <optgroup label="Grade 11">
+                            <option value="11th NS">11th NS</option>
+                            <option value="11th SS">11th SS</option>
+                        </optgroup>
+                        <optgroup label="Grade 10">
+                            <option value="10th A">10th A</option>
+                            <option value="10th B">10th B</option>
+                            <option value="10th C">10th C</option>
+                        </optgroup>
+                        <optgroup label="Grade 9">
+                            <option value="9th A">9th A</option>
+                            <option value="9th B">9th B</option>
+                            <option value="9th C">9th C</option>
+                            <option value="9th D">9th D</option>
+                        </optgroup>
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <label>Upload Student ID Card / School Card Photo (PDF or Image)</label>
-                    <input type="file" name="schoolIdFile" accept=".pdf,image/*" required style="padding: 8px;">
-                    <small style="color: var(--text-gray); font-size: 0.8rem;">Accepted formats: PDF, JPG, PNG</small>
+                    <label>Upload Student ID Card OR National ID (PDF or Image) *At least one required</label>
+                    <div style="margin-bottom: 10px;">
+                        <span style="font-size: 0.85rem; color: var(--text-gray);">School ID Card:</span>
+                        <input type="file" name="schoolIdFile" id="schoolIdFile" accept=".pdf,image/*" style="padding: 6px; margin-top: 4px;">
+                    </div>
+                    <div>
+                        <span style="font-size: 0.85rem; color: var(--text-gray);">OR National ID:</span>
+                        <input type="file" name="nationalIdFile" id="nationalIdFile" accept=".pdf,image/*" style="padding: 6px; margin-top: 4px;">
+                    </div>
+                    <small id="idError" style="color: var(--error-red); display: none; margin-top: 5px;">Please upload either your School ID or National ID.</small>
                 </div>
 
                 <div class="form-group">
@@ -407,6 +436,9 @@
         const applyForm = document.getElementById('applyForm');
         const thankYouBox = document.getElementById('thankYouBox');
         const submitBtn = document.getElementById('submitBtn');
+        const schoolIdFile = document.getElementById('schoolIdFile');
+        const nationalIdFile = document.getElementById('nationalIdFile');
+        const idError = document.getElementById('idError');
 
         problemInput.addEventListener('input', function() {
             const words = this.value.trim().split(/\s+/).filter(Boolean);
@@ -422,6 +454,15 @@
 
         applyForm.addEventListener('submit', function(e) {
             e.preventDefault();
+
+            // Validate ID upload (at least one is required)
+            if (schoolIdFile.files.length === 0 && nationalIdFile.files.length === 0) {
+                idError.style.display = 'block';
+                alert('Please upload either your School ID or National ID card.');
+                return;
+            } else {
+                idError.style.display = 'none';
+            }
 
             const words = problemInput.value.trim().split(/\s+/).filter(Boolean);
             if (words.length > 30) {
