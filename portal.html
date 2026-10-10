@@ -13,6 +13,7 @@
             --text-light: #f3f4f6;
             --text-gray: #9ca3af;
             --border-color: #1f293d;
+            --success-green: #10b981;
         }
 
         * {
@@ -238,6 +239,28 @@
             background-color: #e0a100;
         }
 
+        /* Success Message Box */
+        .thankyou-box {
+            display: none;
+            background: rgba(16, 185, 129, 0.15);
+            border: 2px solid var(--success-green);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .thankyou-box h3 {
+            color: var(--success-green);
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .thankyou-box p {
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
+
         /* Footer */
         footer {
             text-align: center;
@@ -329,7 +352,6 @@
             <h2 style="color: var(--accent-blue); text-align: center; margin-bottom: 20px;">Student Application Form</h2>
 
             <form id="applyForm" action="https://formspree.io/f/moejjvpj" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="_next" value="https://t.me/+2wpJyknPvcYyMWVk">
 
                 <div class="form-group">
                     <label>Full Name</label>
@@ -337,25 +359,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Student ID Number</label>
-                    <input type="text" name="studentId" required placeholder="Enter your School ID Number">
+                    <label>Grade Level & Section</label>
+                    <input type="text" name="gradeSection" required placeholder="e.g., Grade 11A or 9B">
                 </div>
 
                 <div class="form-group">
-                    <label>Upload School ID (PDF or Photo)</label>
+                    <label>Upload Student ID Card / School Card Photo (PDF or Image)</label>
                     <input type="file" name="schoolIdFile" accept=".pdf,image/*" required style="padding: 8px;">
                     <small style="color: var(--text-gray); font-size: 0.8rem;">Accepted formats: PDF, JPG, PNG</small>
-                </div>
-
-                <div class="form-group">
-                    <label>Grade Level</label>
-                    <select name="grade" required>
-                        <option value="">Select Grade</option>
-                        <option value="9">Grade 9</option>
-                        <option value="10">Grade 10</option>
-                        <option value="11">Grade 11</option>
-                        <option value="12">Grade 12</option>
-                    </select>
                 </div>
 
                 <div class="form-group">
@@ -364,7 +375,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Email Address</label>
+                    <label>Email Address (Must be active)</label>
                     <input type="email" name="email" required placeholder="student@gmail.com">
                 </div>
 
@@ -376,6 +387,13 @@
 
                 <button type="submit" class="submit-btn" id="submitBtn">Submit Application</button>
             </form>
+
+            <div id="thankYouBox" class="thankyou-box">
+                <h3>🎉 Thank You for Applying!</h3>
+                <p>Your application has been submitted successfully.</p>
+                <p style="margin-top: 8px; color: var(--accent-yellow);">The results regarding your club membership selection will be announced soon in your email, please check your inbox!</p>
+                <p style="margin-top: 12px; font-size: 0.85rem; color: var(--text-gray);">Redirecting to Telegram...</p>
+            </div>
         </section>
     </div>
 
@@ -386,6 +404,9 @@
     <script>
         const problemInput = document.getElementById('problemInput');
         const wordCount = document.getElementById('wordCount');
+        const applyForm = document.getElementById('applyForm');
+        const thankYouBox = document.getElementById('thankYouBox');
+        const submitBtn = document.getElementById('submitBtn');
 
         problemInput.addEventListener('input', function() {
             const words = this.value.trim().split(/\s+/).filter(Boolean);
@@ -399,12 +420,39 @@
             }
         });
 
-        document.getElementById('applyForm').addEventListener('submit', function(e) {
+        applyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
             const words = problemInput.value.trim().split(/\s+/).filter(Boolean);
             if (words.length > 30) {
-                e.preventDefault();
                 alert('Please keep your problem description under 30 words.');
+                return;
             }
+
+            submitBtn.innerText = 'Submitting...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(this);
+
+            fetch('https://formspree.io/f/moejjvpj', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                applyForm.style.display = 'none';
+                thankYouBox.style.display = 'block';
+                setTimeout(function() {
+                    window.location.href = 'https://t.me/+2wpJyknPvcYyMWVk';
+                }, 3500);
+            }).catch(error => {
+                applyForm.style.display = 'none';
+                thankYouBox.style.display = 'block';
+                setTimeout(function() {
+                    window.location.href = 'https://t.me/+2wpJyknPvcYyMWVk';
+                }, 3500);
+            });
         });
     </script>
 </body>
