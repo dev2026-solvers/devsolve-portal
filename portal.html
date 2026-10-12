@@ -240,28 +240,6 @@
             background-color: #e0a100;
         }
 
-        /* Success Message Box */
-        .thankyou-box {
-            display: none;
-            background: rgba(16, 185, 129, 0.15);
-            border: 2px solid var(--success-green);
-            padding: 25px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .thankyou-box h3 {
-            color: var(--success-green);
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-        }
-
-        .thankyou-box p {
-            color: var(--text-light);
-            font-size: 1.05rem;
-        }
-
         /* Footer */
         footer {
             text-align: center;
@@ -353,6 +331,7 @@
             <h2 style="color: var(--accent-blue); text-align: center; margin-bottom: 20px;">Student Application Form</h2>
 
             <form id="applyForm" action="https://formspree.io/f/moejjvpj" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="_next" value="https://t.me/+2wpJyknPvcYyMWVk">
 
                 <div class="form-group">
                     <label>Full Name</label>
@@ -416,13 +395,6 @@
 
                 <button type="submit" class="submit-btn" id="submitBtn">Submit Application</button>
             </form>
-
-            <div id="thankYouBox" class="thankyou-box">
-                <h3>🎉 Thank You for Applying!</h3>
-                <p>Your application has been submitted successfully.</p>
-                <p style="margin-top: 8px; color: var(--accent-yellow);">The results regarding your club membership selection will be announced soon in your email, please check your inbox!</p>
-                <p style="margin-top: 12px; font-size: 0.85rem; color: var(--text-gray);">Redirecting to Telegram...</p>
-            </div>
         </section>
     </div>
 
@@ -434,8 +406,6 @@
         const problemInput = document.getElementById('problemInput');
         const wordCount = document.getElementById('wordCount');
         const applyForm = document.getElementById('applyForm');
-        const thankYouBox = document.getElementById('thankYouBox');
-        const submitBtn = document.getElementById('submitBtn');
         const schoolIdFile = document.getElementById('schoolIdFile');
         const nationalIdFile = document.getElementById('nationalIdFile');
         const idError = document.getElementById('idError');
@@ -453,10 +423,9 @@
         });
 
         applyForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
             // Validate ID upload (at least one is required)
             if (schoolIdFile.files.length === 0 && nationalIdFile.files.length === 0) {
+                e.preventDefault();
                 idError.style.display = 'block';
                 alert('Please upload either your School ID or National ID card.');
                 return;
@@ -464,36 +433,13 @@
                 idError.style.display = 'none';
             }
 
+            // Validate word count
             const words = problemInput.value.trim().split(/\s+/).filter(Boolean);
             if (words.length > 30) {
+                e.preventDefault();
                 alert('Please keep your problem description under 30 words.');
                 return;
             }
-
-            submitBtn.innerText = 'Submitting...';
-            submitBtn.disabled = true;
-
-            const formData = new FormData(this);
-
-            fetch('https://formspree.io/f/moejjvpj', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                applyForm.style.display = 'none';
-                thankYouBox.style.display = 'block';
-                setTimeout(function() {
-                    window.location.href = 'https://t.me/+2wpJyknPvcYyMWVk';
-                }, 3500);
-            }).catch(error => {
-                applyForm.style.display = 'none';
-                thankYouBox.style.display = 'block';
-                setTimeout(function() {
-                    window.location.href = 'https://t.me/+2wpJyknPvcYyMWVk';
-                }, 3500);
-            });
         });
     </script>
 </body>
