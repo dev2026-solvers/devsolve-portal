@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>devsolve COMMUNITY | Official Portal</title>
+    <title>devsolve COMMUNITY | Application Portal</title>
     <style>
         :root {
             --bg-dark: #070b19;
-            --card-bg: rgba(17, 24, 39, 0.85);
+            --card-bg: rgba(17, 24, 39, 0.9);
             --accent-blue: #00d2ff;
             --accent-yellow: #ffb703;
             --text-light: #f3f4f6;
             --text-gray: #9ca3af;
             --border-color: #1f293d;
+            --error-red: #ef4444;
+            --success-green: #10b981;
         }
 
         * {
@@ -32,7 +34,6 @@
             line-height: 1.6;
         }
 
-        /* Top Bar */
         .top-bar {
             background-color: rgba(5, 8, 17, 0.9);
             padding: 8px 5%;
@@ -48,7 +49,6 @@
             text-decoration: none;
         }
 
-        /* Navbar */
         nav {
             display: flex;
             justify-content: space-between;
@@ -124,17 +124,15 @@
             transform: translateY(-2px);
         }
 
-        /* Main Container */
         .container {
-            max-width: 1100px;
+            max-width: 900px;
             margin: 40px auto;
             padding: 0 20px;
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
-            padding: 60px 20px;
+            padding: 50px 20px;
             background: rgba(17, 24, 39, 0.7);
             backdrop-filter: blur(8px);
             border: 1px solid var(--border-color);
@@ -143,69 +141,131 @@
         }
 
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             color: var(--accent-blue);
             margin-bottom: 15px;
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-gray);
             max-width: 700px;
-            margin: 0 auto 30px;
+            margin: 0 auto;
         }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            backdrop-filter: blur(6px);
-            border: 1px solid var(--border-color);
-            padding: 24px;
-            border-radius: 8px;
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent-blue);
-        }
-
-        .card h3 {
-            color: var(--accent-blue);
-            margin-bottom: 10px;
-        }
-
-        /* Form Container */
+        /* Form Styling */
         .form-section {
             background-color: var(--card-bg);
             backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
-            padding: 25px;
+            padding: 35px;
             border-radius: 12px;
-            margin-top: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
-        .form-container {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            border-radius: 8px;
-            background: #ffffff;
+        .form-section h2 {
+            color: var(--accent-blue);
+            text-align: center;
+            margin-bottom: 10px;
         }
 
-        iframe {
+        .form-notice {
+            background: rgba(255, 183, 3, 0.1);
+            border-left: 4px solid var(--accent-yellow);
+            padding: 12px 15px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
             width: 100%;
-            height: 900px;
+            padding: 12px 15px;
+            background-color: rgba(10, 15, 30, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .error-msg {
+            color: var(--error-red);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .word-counter {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--accent-blue), #0072ff);
+            color: #000;
             border: none;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.2s;
+            margin-top: 10px;
         }
 
-        /* Footer */
+        .btn-submit:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Success Card */
+        #success-card {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success-green);
+            border-radius: 12px;
+        }
+
+        #success-card h3 {
+            color: var(--success-green);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        #success-card p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
         footer {
             text-align: center;
             padding: 30px 5%;
@@ -233,69 +293,75 @@
             </div>
         </div>
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#founders">Founders</a></li>
-            <li><a href="#apply" class="btn-apply">Apply Now</a></li>
+            <li><a href="#apply">Application Form</a></li>
         </ul>
         <img src="school.logo.jpg" alt="School Logo" class="right-logo">
     </nav>
 
-    <div class="container" id="home">
+    <div class="container">
         <section class="hero">
-            <h1>Welcome to devsolve COMMUNITY</h1>
-            <p>Empowering Bahir Dar students with Practical Coding & Artificial Intelligence.</p>
-
-            <div class="features-grid">
-                <div class="card">
-                    <h3>💡 Practical Coding</h3>
-                    <p>Learn software engineering principles by solving actual school challenges.</p>
-                </div>
-                <div class="card">
-                    <h3>🤖 AI Integration</h3>
-                    <p>Explore modern AI systems and apply them to real-world tasks.</p>
-                </div>
-                <div class="card">
-                    <h3>🤝 Student Mentorship</h3>
-                    <p>Collaborate with motivated peers under guided developer projects.</p>
-                </div>
-            </div>
+            <h1>devsolve COMMUNITY Application</h1>
+            <p>Join Bahir Dar's premier high school coding and artificial intelligence club.</p>
         </section>
 
-        <section id="about" style="margin-bottom: 40px;">
-            <h2 style="color: var(--accent-blue); margin-bottom: 20px;">About the Club</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                <div class="card">
-                    <h4 style="color: var(--accent-blue); margin-bottom: 8px;">Our Mission</h4>
-                    <p>To bridge high school education with technical software problem-solving skills.</p>
-                </div>
-                <div class="card">
-                    <h4 style="color: var(--accent-blue); margin-bottom: 8px;">Our Vision</h4>
-                    <p>Building a generation of innovative tech leaders and software builders in Bahir Dar.</p>
-                </div>
+        <section class="form-section">
+            <h2>Student Registration Form</h2>
+            <div class="form-notice">
+                ⚠️ <strong>Important Notice:</strong> Please submit accurate information in every section. Providing correct details is mandatory to get accepted and become an official member of the devsolve COMMUNITY.
             </div>
-        </section>
 
-        <section id="founders" style="margin-bottom: 40px;">
-            <h2 style="color: var(--accent-blue); margin-bottom: 20px;">Founders & Leadership</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                <div class="card">
-                    <h3>Hadya</h3>
-                    <p style="color: var(--accent-yellow);">Co-Founder & Club Leader</p>
-                    <p style="margin-top: 8px; font-size: 0.9rem;">Leads project development, curriculum design, and technical strategy.</p>
-                </div>
-                <div class="card">
-                    <h3>Yeabsira</h3>
-                    <p style="color: var(--accent-yellow);">Co-Founder & Club Leader</p>
-                    <p style="margin-top: 8px; font-size: 0.9rem;">Oversees operations, student outreach, and administrative execution.</p>
-                </div>
-            </div>
-        </section>
+            <!-- Application Form (Formspree Endpoint) -->
+            <form id="applicationForm" action="https://formspree.io/f/moejjvpj" method="POST">
 
-        <section id="apply" class="form-section">
-            <h2 style="color: var(--accent-blue); text-align: center; margin-bottom: 20px;">Student Application Form</h2>
-            <div class="form-container">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScisGdCRFPZcbfJM_Phl0_kCQMRtL-UQaZIcXAbD8BrrJzQPg/viewform?embedded=true" width="100%" height="900" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="fullname">Full Name (Your Name & Father's Name) *</label>
+                    <input type="text" id="fullname" name="fullname" placeholder="e.g., Abebe Kebede" required>
+                    <div id="nameError" class="error-msg">Please enter your full name including your father's name.</div>
+                </div>
+
+                <!-- Grade Level & Section -->
+                <div class="form-group">
+                    <label for="grade">Grade Level & Section *</label>
+                    <select id="grade" name="grade" required>
+                        <option value="" disabled selected>Select your grade and section</option>
+                        <option value="12th Natural Science">12th Natural Science</option>
+                        <option value="12th Social Science">12th Social Science</option>
+                        <option value="11th Natural Science">11th Natural Science</option>
+                        <option value="11th Social Science">11th Social Science</option>
+                        <option value="10th Grade">10th Grade</option>
+                        <option value="9th Grade">9th Grade</option>
+                    </select>
+                </div>
+
+                <!-- Ethiopian Phone Number -->
+                <div class="form-group">
+                    <label for="phone">Ethiopian Phone Number *</label>
+                    <input type="text" id="phone" name="phone" placeholder="e.g., 0911223344 or +251911223344" required>
+                    <div id="phoneError" class="error-msg">Please enter a valid Ethiopian phone number (e.g., 09... or +2519...).</div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" placeholder="e.g., student@gmail.com" required>
+                </div>
+
+                <!-- Essay / Problem Statement -->
+                <div class="form-group">
+                    <label for="essay">What school problem do you want to solve? (30 to 50 words) *</label>
+                    <textarea id="essay" name="essay" rows="4" placeholder="Write your brief statement here..." required></textarea>
+                    <div class="word-counter" id="wordCount">Words: 0 / 50 (Min 30)</div>
+                    <div id="essayError" class="error-msg">Your explanation must be between 30 and 50 words.</div>
+                </div>
+
+                <button type="submit" class="btn-submit">Submit Application</button>
+            </form>
+
+            <!-- Success Card Message -->
+            <div id="success-card">
+                <h3>🎉 Application Submitted Successfully!</h3>
+                <p>Thank you! Your application has been received. You will get an email soon, so please check your inbox...</p>
             </div>
         </section>
     </div>
@@ -304,5 +370,88 @@
         <p>&copy; 2026 devsolve COMMUNITY. All rights reserved.</p>
     </footer>
 
+    <script>
+        const form = document.getElementById('applicationForm');
+        const essayInput = document.getElementById('essay');
+        const wordCountDisplay = document.getElementById('wordCount');
+        const successCard = document.getElementById('success-card');
+
+        // Word count validator for essay
+        essayInput.addEventListener('input', function() {
+            const text = this.value.trim();
+            const words = text === '' ? [] : text.split(/\s+/);
+            const count = words.length;
+            wordCountDisplay.textContent = `Words: ${count} / 50 (Min 30)`;
+
+            if (count < 30 || count > 50) {
+                wordCountDisplay.style.color = '#ef4444';
+            } else {
+                wordCountDisplay.style.color = '#10b981';
+            }
+        });
+
+        // Form submission validation & AJAX handler
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let isValid = true;
+
+            // 1. Full Name Check (at least two words)
+            const fullname = document.getElementById('fullname').value.trim();
+            const nameParts = fullname.split(/\s+/);
+            const nameError = document.getElementById('nameError');
+            if (nameParts.length < 2) {
+                nameError.style.display = 'block';
+                isValid = false;
+            } else {
+                nameError.style.display = 'none';
+            }
+
+            // 2. Ethiopian Phone Number Check
+            const phone = document.getElementById('phone').value.trim();
+            const phoneError = document.getElementById('phoneError');
+            const phoneRegex = /^(\+251|0)[79]\d{8}$/;
+            if (!phoneRegex.test(phone)) {
+                phoneError.style.display = 'block';
+                isValid = false;
+            } else {
+                phoneError.style.display = 'none';
+            }
+
+            // 3. Essay Word Count Check (30 to 50 words)
+            const essayText = essayInput.value.trim();
+            const wordCount = essayText === '' ? 0 : essayText.split(/\s+/).length;
+            const essayError = document.getElementById('essayError');
+            if (wordCount < 30 || wordCount > 50) {
+                essayError.style.display = 'block';
+                isValid = false;
+            } else {
+                essayError.style.display = 'none';
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            // Send data via Fetch API to Formspree
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    form.style.display = 'none';
+                    successCard.style.display = 'block';
+                } else {
+                    alert('Oops! There was a problem submitting your form. Please try again.');
+                }
+            }).catch(error => {
+                alert('Oops! There was a network error. Please check your connection.');
+            });
+        });
+    </script>
 </body>
 </html>
